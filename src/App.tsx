@@ -34,7 +34,7 @@ function App() {
 
 function Body() {
   const [count, increment] = Counter.useCounter();
-  const [snapshot, takeSnapshot] = Counter.useCounterSnapshot();
+  const [snapshot, {takeSnapshot, restore}] = Counter.useCounterSnapshot();
   return (
     <Container
       h="100%"
@@ -50,7 +50,7 @@ function Body() {
         <Button type='button' onClick={takeSnapshot} textColor='gray'>
           take snapshot
         </Button>
-        <SnapshotTabel snapshot={snapshot} />
+        <SnapshotTabel snapshot={snapshot} restore={restore}/>
         <Spacer paddingBottom={footerHeight}/>
       </VStack>
     </Container>
@@ -58,7 +58,8 @@ function Body() {
 }
 
 type SnapshotProps = {
-  snapshot: Counter.CounterSnapshot[]
+  snapshot: Counter.CounterSnapshot[],
+  restore: (n: number) => void
 }
 function SnapshotTabel(props: SnapshotProps) {
   const body = props.snapshot.map(({count, takedAt}) => {
@@ -66,6 +67,9 @@ function SnapshotTabel(props: SnapshotProps) {
       <C.Tr h='10px' key={`counter-table-row-${count}`}>
         <C.Td>{count}</C.Td>
         <C.Td>{takedAt.toUTCString()}</C.Td>
+        <C.Td>
+          <Button type='button' onClick={() => props.restore(count)}>DO</Button>
+        </C.Td>
       </C.Tr>
     )
   })
@@ -79,6 +83,9 @@ function SnapshotTabel(props: SnapshotProps) {
           </C.Th>
           <C.Th>
             taked at
+          </C.Th>
+          <C.Th>
+            restore
           </C.Th>
         </C.Tr>
       </C.Thead>

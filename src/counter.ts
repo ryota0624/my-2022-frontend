@@ -25,8 +25,8 @@ export type CounterSnapshot = {
     takedAt: Date
 }
 
-export function useCounterSnapshot(): [CounterSnapshot[], () => void] {
-    const [counter] = useRecoilState(counterState);
+export function useCounterSnapshot() {
+    const [counter, setCounter] = useRecoilState(counterState);
     const [snapshot, setSnapshot] = useRecoilState(counterSnapshotState);
 
     const takeSnapshot = () => {
@@ -39,8 +39,12 @@ export function useCounterSnapshot(): [CounterSnapshot[], () => void] {
       }
       setSnapshot([...snapshot, newSnapshot])
     };
-  
-    return [snapshot, takeSnapshot];
+ 
+    
+    const restore = (count: number) => {
+        setCounter(count)
+    }
+    return [snapshot, {takeSnapshot, restore}] as const;
   }
 
 const counterFibonattiState = selector({
