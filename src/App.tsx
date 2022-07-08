@@ -1,3 +1,4 @@
+import { Button, ChakraProvider, Image, Link, Text } from '@chakra-ui/react';
 import { RecoilRoot } from 'recoil';
 import './App.css';
 import * as Counter from './counter';
@@ -8,45 +9,45 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={increment}>
+        <Image src={logo} className="App-logo" alt="logo" />
+        <Text>Hello Vite + React!</Text>
+        <Text>
+          <Button type="button" onClick={increment} textColor="gray">
             count is: {count}
-          </button>
-        </p>
-        <p>
-          fibo(coutner) = {Counter.useCounterFibonattiState()}
-        </p>
-        <p>
+          </Button>
+        </Text>
+        <Text>fibo(coutner) = {Counter.useCounterFibonattiState()}</Text>
+        <Text>
           Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
+        </Text>
+        <Text>
+          <Link color={"lightblue"}
             href="https://reactjs.org"
             target="_blank"
             rel="noopener noreferrer"
           >
             Learn React
-          </a>
+          </Link>
           {' | '}
-          <a
-            className="App-link"
+          <Link color={"lightblue"}
             href="https://vitejs.dev/guide/features.html"
             target="_blank"
             rel="noopener noreferrer"
           >
             Vite Docs
-          </a>
-        </p>
+          </Link>
+        </Text>
       </header>
     </div>
   );
 }
 
 export default function () {
- return (<RecoilRoot>
-    <App />
-  </RecoilRoot>);
+  return (
+    <ChakraProvider>
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
+    </ChakraProvider>
+  );
 }
