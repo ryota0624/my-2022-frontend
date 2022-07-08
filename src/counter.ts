@@ -1,9 +1,14 @@
-import {atom, selector, useRecoilState, useRecoilValue} from 'recoil';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 
 const counterState = atom({
   key: 'counter',
   default: 0,
 });
+
+const counterSnapshotState = atom<CounterSnapshot[]>({
+    key: 'counterSnapshot',
+    default: [],
+  });
 
 export function useCounter(): [number, () => void] {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -14,6 +19,29 @@ export function useCounter(): [number, () => void] {
 
   return [counter, increment];
 }
+
+export type CounterSnapshot = {
+    count: number,
+    takedAt: Date
+}
+
+export function useCounterSnapshot(): [CounterSnapshot[], () => void] {
+    const [counter] = useRecoilState(counterState);
+    const [snapshot, setSnapshot] = useRecoilState(counterSnapshotState);
+
+    const takeSnapshot = () => {
+      if (snapshot.find(s => s.count == counter) !== undefined) {
+        return
+      }  
+      const newSnapshot: CounterSnapshot = {
+        count: counter,
+        takedAt: new Date(Date.now())
+      }
+      setSnapshot([...snapshot, newSnapshot])
+    };
+  
+    return [snapshot, takeSnapshot];
+  }
 
 const counterFibonattiState = selector({
   key: 'counterFibonattiState',

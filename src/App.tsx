@@ -8,43 +8,86 @@ import {
   HStack,
   Image,
   Link,
+  Spacer,
   Text,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
-import {RecoilRoot} from 'recoil';
+
+import * as C from '@chakra-ui/react';
+import { RecoilRoot } from 'recoil';
 import './App.css';
 import * as Counter from './counter';
 import logo from './logo.svg';
 
+const footerHeight = '50px'
+
+
 function App() {
-  const [count, increment] = Counter.useCounter();
   return (
     <>
       <Header />
-      <Container
-        className="App"
-        backgroundColor={'blackAlpha.500'}
-        scrollBehavior="smooth"
-      >
-        <VStack>
-          <Button
-            type="button"
-            onClick={increment}
-            textColor="gray"
-            margin={'1'}
-          >
-            count is: {count}
-          </Button>
-          <Text>fibo(coutner) = {Counter.useCounterFibonattiState()}</Text>
-          <Text>
-            Edit <code>App.tsx</code> and save to test HMR updates.
-          </Text>
-        </VStack>
-      </Container>
-
-      <Footer></Footer>
+      <Body />
+      <Footer />
     </>
   );
+}
+
+function Body() {
+  const [count, increment] = Counter.useCounter();
+  const [snapshot, takeSnapshot] = Counter.useCounterSnapshot();
+  return (
+    <Container
+      h="100%"
+      className="App"
+      backgroundColor={'blackAlpha.500'}
+      scrollBehavior="smooth"
+    >
+      <VStack>
+        <Button type="button" onClick={increment} textColor="gray" margin={'1'}>
+          count is: {count}
+        </Button>
+        <Text>fibo(coutner) = {Counter.useCounterFibonattiState()}</Text>
+        <Button type='button' onClick={takeSnapshot} textColor='gray'>
+          take snapshot
+        </Button>
+        <SnapshotTabel snapshot={snapshot} />
+        <Spacer paddingBottom={footerHeight}/>
+      </VStack>
+    </Container>
+  );
+}
+
+type SnapshotProps = {
+  snapshot: Counter.CounterSnapshot[]
+}
+function SnapshotTabel(props: SnapshotProps) {
+  const body = props.snapshot.map(({count, takedAt}) => {
+    return (
+      <C.Tr h='10px' key={`counter-table-row-${count}`}>
+        <C.Td>{count}</C.Td>
+        <C.Td>{takedAt.toUTCString()}</C.Td>
+      </C.Tr>
+    )
+  })
+  return (
+    <Container h='250px' overflow={'auto'}>
+    <C.Table>
+      <C.Thead bgColor='lightblue' position={'sticky'} top='0' left='0'>
+        <C.Tr>
+          <C.Th>
+            count
+          </C.Th>
+          <C.Th>
+            taked at
+          </C.Th>
+        </C.Tr>
+      </C.Thead>
+      <C.Tbody>
+        {body}
+      </C.Tbody>
+    </C.Table>
+    </Container>
+  )
 }
 
 function Header() {
@@ -58,6 +101,7 @@ function Header() {
   );
 }
 
+
 function Footer() {
   return (
     <Center>
@@ -67,7 +111,7 @@ function Footer() {
         bottom="0"
         backgroundColor={'black'}
       >
-        <HStack w="100%" h={'50px'}>
+        <HStack w="100%" h={footerHeight}>
           <Box flex={1}>
             <Center>
               <Link
@@ -92,6 +136,18 @@ function Footer() {
               </Link>
             </Center>
           </Box>
+          <Box flex={1}>
+            <Center>
+              <Link
+                color={'lightblue'}
+                href="https://chakra-ui.com/getting-started"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                chakra-ui
+              </Link>
+            </Center>
+          </Box>
         </HStack>
       </Container>
     </Center>
@@ -99,6 +155,13 @@ function Footer() {
 }
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      'html, body': {
+        height: '100%',
+      },
+    },
+  },
   components: {
     Container: {
       baseStyle: {
