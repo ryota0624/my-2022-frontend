@@ -1,14 +1,17 @@
 import {
+  Box,
   Button,
   Center,
   ChakraProvider,
-  Container, extendTheme, HStack,
+  Container,
+  extendTheme,
+  HStack,
   Image,
   Link,
   Text,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
-import { RecoilRoot } from 'recoil';
+import {RecoilRoot} from 'recoil';
 import './App.css';
 import * as Counter from './counter';
 import logo from './logo.svg';
@@ -23,7 +26,6 @@ function App() {
         backgroundColor={'blackAlpha.500'}
         scrollBehavior="smooth"
       >
-        {' '}
         <VStack>
           <Button
             type="button"
@@ -65,27 +67,32 @@ function Footer() {
         bottom="0"
         backgroundColor={'black'}
       >
-        <Center h={'50px'}>
-          <Text>
-            <Link
-              color={'lightblue'}
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </Link>
-            {' | '}
-            <Link
-              color={'lightblue'}
-              href="https://vitejs.dev/guide/features.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Vite Docs
-            </Link>
-          </Text>
-        </Center>
+        <HStack w="100%" h={'50px'}>
+          <Box flex={1}>
+            <Center>
+              <Link
+                color={'lightblue'}
+                href="https://reactjs.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn React
+              </Link>
+            </Center>
+          </Box>
+          <Box flex={1}>
+            <Center>
+              <Link
+                color={'lightblue'}
+                href="https://vitejs.dev/guide/features.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Vite Docs
+              </Link>
+            </Center>
+          </Box>
+        </HStack>
       </Container>
     </Center>
   );
@@ -95,11 +102,11 @@ const theme = extendTheme({
   components: {
     Container: {
       baseStyle: {
-        maxWidth: "100%"
-      }
-    }
-  }
-})
+        maxWidth: '100%',
+      },
+    },
+  },
+});
 
 export default function () {
   return (
@@ -110,4 +117,3 @@ export default function () {
     </ChakraProvider>
   );
 }
-
