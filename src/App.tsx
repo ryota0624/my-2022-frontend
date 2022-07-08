@@ -76,7 +76,7 @@ function SnapshotTabel(props: SnapshotProps) {
   return (
     <Container h='250px' overflow={'auto'}>
     <C.Table>
-      <C.Thead bgColor='lightblue' position={'sticky'} top='0' left='0'>
+      <C.Thead bgColor='lightblue' position={'sticky'} top='0' left='0' zIndex={2}>
         <C.Tr>
           <C.Th>
             count
